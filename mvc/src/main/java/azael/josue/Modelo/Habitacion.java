@@ -1,15 +1,18 @@
 package azael.josue.Modelo;
 
 public class Habitacion {
+    // Declaracion de variables
     private int numero;
-    private String tipo; // "Individual", "Doble" o "Suite"
-    private String estado; // "Disponible" o "Reservada"
+    private TipoHabitacion tipo;
+    private EstadoHabitacion estado;
+    private String descripcion;
 
     // Constructor con sus características de habitacion
-    public Habitacion(int numero, String tipo, String estado) {
+    public Habitacion(int numero, TipoHabitacion tipo, String descripcion) {
         this.numero = numero;
         this.tipo = tipo;
-        this.estado = estado;
+        this.estado = EstadoHabitacion.DISPONIBLE;
+        this.descripcion = descripcion;
     }
 
     // Getters y setters
@@ -17,29 +20,23 @@ public class Habitacion {
         return numero;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public String getTipo() {
+    public TipoHabitacion getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getEstado() {
+    public EstadoHabitacion getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoHabitacion estado) {
         this.estado = estado;
     }
 
-    // Mostrar en String información de la habtación
-    @Override
-    public String toString() {
-        return "Habitación " + numero + " - " + tipo + " - Estado: " + estado;
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }
