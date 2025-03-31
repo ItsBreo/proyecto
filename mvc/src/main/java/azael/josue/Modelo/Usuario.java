@@ -9,6 +9,7 @@ public class Usuario {
     private Reserva idReserva;
     private ArrayList<Reserva> historialReservas;
     private final int maximasReservas = 3;
+    private String contraseña;
 
     // Constructor con sus características
     public Usuario(String nombre, Reserva idReserva, ArrayList<Reserva> historialReservas) {
@@ -16,6 +17,12 @@ public class Usuario {
         this.idReserva = idReserva;
         this.historialReservas = historialReservas;
         this.id = historialReservas.size() + 1;
+    }
+
+    public Usuario(String nombre, int id, String contraseña){
+        this.nombre = nombre;
+        this.id = id;
+        this.contraseña = contraseña;
     }
 
     // Getters y Setters    
@@ -53,6 +60,14 @@ public class Usuario {
     
     public boolean puedeHacerReserva() {
         return historialReservas.size() < maximasReservas;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
     
     @Override
