@@ -15,6 +15,7 @@ public class Usuario {
         this.nombre = nombre;
         this.idReserva = idReserva;
         this.historialReservas = historialReservas;
+        this.id = historialReservas.size() + 1;
     }
 
     // Getters y Setters    

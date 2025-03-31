@@ -15,6 +15,14 @@ public class Habitacion {
         this.descripcion = descripcion;
     }
 
+    // Constructor que permite especificar el estado inicial
+    public Habitacion(int numero, TipoHabitacion tipo, EstadoHabitacion estado, String descripcion) {
+        this.numero = numero;
+        this.tipo = tipo;
+        this.estado = estado;
+        this.descripcion = descripcion;
+    }
+
     // Getters y setters
     public int getNumero() {
         return numero;
@@ -38,5 +46,10 @@ public class Habitacion {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "Habitacion [numero=" + numero + ", tipo=" + tipo + ", estado=" + estado + ", descripcion=" + descripcion +"]";
     }
 }
