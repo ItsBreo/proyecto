@@ -12,14 +12,14 @@ public class Usuario {
     private String contraseña;
 
     // Constructor con sus características
-    public Usuario(String nombre, Reserva idReserva, ArrayList<Reserva> historialReservas) {
+    public Usuario(String nombre, Reserva idReserva, ArrayList<Reserva> historialReservas, String contraseña) {
         this.nombre = nombre;
         this.idReserva = idReserva;
         this.historialReservas = historialReservas;
         this.id = historialReservas.size() + 1;
     }
 
-    public Usuario(String nombre, int id, String contraseña){
+    public Usuario(String nombre, int id, String contraseña) {
         this.nombre = nombre;
         this.id = id;
         this.contraseña = contraseña;
