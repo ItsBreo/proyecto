@@ -6,114 +6,121 @@ import azael.josue.Modelo.Habitacion;
 import azael.josue.Modelo.TipoHabitacion;
 import azael.josue.Modelo.EstadoHabitacion;
 
+/**
+ * Controlador que maneja la lógica de las habitaciones del hotel.
+ * Se encarga de inicializar, buscar y mostrar información de las habitaciones.
+ */
 public class ControladorHabitaciones {
     private List<Habitacion> habitaciones;
 
+    /**
+     * Constructor que inicializa la lista de habitaciones y las crea.
+     */
     public ControladorHabitaciones() {
         this.habitaciones = new ArrayList<>();
-        inicializarHabitaciones(); // Crear algunas habitaciones de ejemplo
+        inicializarHabitaciones();
     }
 
+    /**
+     * Crea todas las habitaciones del hotel, organizadas por pisos.
+     * Cada piso tiene 5 habitaciones: 2 individuales, 2 dobles y 1 suite.
+     */
     private void inicializarHabitaciones() {
-        // Primer piso (101-105)
-        habitaciones.add(new Habitacion(101, TipoHabitacion.INDIVIDUAL, EstadoHabitacion.DISPONIBLE, "Vista al jardín"));
-        habitaciones.add(new Habitacion(102, TipoHabitacion.DOBLE, EstadoHabitacion.OCUPADA, "Vista a la piscina"));
-        habitaciones.add(new Habitacion(103, TipoHabitacion.SUITE, EstadoHabitacion.DISPONIBLE, "Suite ejecutiva"));
-        habitaciones.add(new Habitacion(104, TipoHabitacion.DOBLE, EstadoHabitacion.RESERVADA, "Vista panorámica"));
-        habitaciones.add(new Habitacion(105, TipoHabitacion.INDIVIDUAL, EstadoHabitacion.DISPONIBLE, "Vista al mar"));
+        // Piso 1 (101-105)
+        habitaciones.add(new Habitacion(101, 1, TipoHabitacion.INDIVIDUAL, 50.0));
+        habitaciones.add(new Habitacion(102, 1, TipoHabitacion.INDIVIDUAL, 50.0));
+        habitaciones.add(new Habitacion(103, 1, TipoHabitacion.DOBLE, 80.0));
+        habitaciones.add(new Habitacion(104, 1, TipoHabitacion.DOBLE, 80.0));
+        habitaciones.add(new Habitacion(105, 1, TipoHabitacion.SUITE, 150.0));
 
-        // Segundo piso (201-205)
-        habitaciones.add(new Habitacion(201, TipoHabitacion.SUITE, EstadoHabitacion.DISPONIBLE, "Suite familiar"));
-        habitaciones.add(new Habitacion(202, TipoHabitacion.DOBLE, EstadoHabitacion.OCUPADA, "Vista a la ciudad"));
-        habitaciones.add(new Habitacion(203, TipoHabitacion.INDIVIDUAL, EstadoHabitacion.DISPONIBLE, "Vista al jardín"));
-        habitaciones.add(new Habitacion(204, TipoHabitacion.SUITE, EstadoHabitacion.RESERVADA, "Suite premium"));
-        habitaciones.add(new Habitacion(205, TipoHabitacion.DOBLE, EstadoHabitacion.DISPONIBLE, "Vista a la montaña"));
+        // Piso 2 (201-205)
+        habitaciones.add(new Habitacion(201, 2, TipoHabitacion.INDIVIDUAL, 50.0));
+        habitaciones.add(new Habitacion(202, 2, TipoHabitacion.INDIVIDUAL, 50.0));
+        habitaciones.add(new Habitacion(203, 2, TipoHabitacion.DOBLE, 80.0));
+        habitaciones.add(new Habitacion(204, 2, TipoHabitacion.DOBLE, 80.0));
+        habitaciones.add(new Habitacion(205, 2, TipoHabitacion.SUITE, 150.0));
 
-        // Tercer piso (301-305)
-        habitaciones.add(new Habitacion(301, TipoHabitacion.SUITE, EstadoHabitacion.DISPONIBLE, "Suite presidencial"));
-        habitaciones.add(new Habitacion(302, TipoHabitacion.DOBLE, EstadoHabitacion.DISPONIBLE, "Vista panorámica"));
-        habitaciones.add(new Habitacion(303, TipoHabitacion.INDIVIDUAL, EstadoHabitacion.OCUPADA, "Vista al mar"));
-        habitaciones.add(new Habitacion(304, TipoHabitacion.SUITE, EstadoHabitacion.RESERVADA, "Suite de lujo"));
-        habitaciones.add(new Habitacion(305, TipoHabitacion.DOBLE, EstadoHabitacion.DISPONIBLE, "Vista a la ciudad"));
+        // Piso 3 (301-305)
+        habitaciones.add(new Habitacion(301, 3, TipoHabitacion.INDIVIDUAL, 50.0));
+        habitaciones.add(new Habitacion(302, 3, TipoHabitacion.INDIVIDUAL, 50.0));
+        habitaciones.add(new Habitacion(303, 3, TipoHabitacion.DOBLE, 80.0));
+        habitaciones.add(new Habitacion(304, 3, TipoHabitacion.DOBLE, 80.0));
+        habitaciones.add(new Habitacion(305, 3, TipoHabitacion.SUITE, 150.0));
     }
 
-    public void mostrarHabitaciones() {
-        System.out.println("\n=== LISTADO DE HABITACIONES ===\n");
-        System.out.println("N°  | TIPO          | ESTADO        | DESCRIPCIÓN");
-        System.out.println("----+---------------+--------------+-------------");
+    /**
+     * Verifica si existe una habitación con el número especificado.
+     * @param numero Número de habitación a buscar
+     * @return true si la habitación existe, false en caso contrario
+     */
+    public boolean existeHabitacion(int numero) {
+        return habitaciones.stream()
+            .anyMatch(h -> h.getNumero() == numero);
+    }
+
+    /**
+     * Obtiene el precio de una habitación por su número.
+     * @param numero Número de habitación
+     * @return Precio de la habitación, o 0.0 si no existe
+     */
+    public double getPrecioHabitacion(int numero) {
+        return habitaciones.stream()
+            .filter(h -> h.getNumero() == numero)
+            .findFirst()
+            .map(Habitacion::getPrecio)
+            .orElse(0.0);
+    }
+
+    /**
+     * Muestra todas las habitaciones del hotel en formato de tabla,
+     * ordenadas por número de habitación.
+     */
+    public void mostrarTodasHabitaciones() {
+        System.out.println("\n=== TODAS LAS HABITACIONES ===\n");
+        System.out.println("NUM | PISO | TIPO       | PRECIO | ESTADO");
+        System.out.println("----+------+------------+--------+--------");
         
-        for (Habitacion habitacion : habitaciones) {
-            System.out.printf("%-3d | %-13s | %-12s | %s%n", 
-                habitacion.getNumero(), 
-                habitacion.getTipo(),
-                habitacion.getEstado(),
-                habitacion.getDescripcion());
-        }
-        System.out.println("\n");
+        habitaciones.stream()
+            .sorted((h1, h2) -> h1.getNumero() - h2.getNumero())
+            .forEach(h -> System.out.printf("%3d | %-4d | %-10s | $%-6.0f| %s%n",
+                h.getNumero(), h.getPiso(), h.getTipo(), h.getPrecio(), h.getEstado()));
+        System.out.println();
     }
 
+    /**
+     * Muestra solo las habitaciones que están disponibles para reservar,
+     * ordenadas por número de habitación.
+     */
     public void mostrarHabitacionesDisponibles() {
         System.out.println("\n=== HABITACIONES DISPONIBLES ===\n");
-        System.out.println("N°  | TIPO          | DESCRIPCIÓN");
-        System.out.println("----+---------------+-------------");
+        System.out.println("NUM | PISO | TIPO       | PRECIO");
+        System.out.println("----+------+------------+--------");
         
-        for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getEstado() == EstadoHabitacion.DISPONIBLE) {
-                System.out.printf("%-3d | %-13s | %s%n", 
-                    habitacion.getNumero(), 
-                    habitacion.getTipo(),
-                    habitacion.getDescripcion());
-            }
-        }
-        System.out.println("\n");
+        habitaciones.stream()
+            .filter(h -> h.getEstado() == EstadoHabitacion.DISPONIBLE)
+            .sorted((h1, h2) -> h1.getNumero() - h2.getNumero())
+            .forEach(h -> System.out.printf("%3d | %-4d | %-10s | $%-6.0f%n",
+                h.getNumero(), h.getPiso(), h.getTipo(), h.getPrecio()));
+        System.out.println();
     }
 
-    public void cambiarEstadoHabitacion(int numeroHabitacion, EstadoHabitacion nuevoEstado) {
-        for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getNumero() == numeroHabitacion) {
-                habitacion.setEstado(nuevoEstado);
-                System.out.println("Estado de la habitación " + numeroHabitacion + 
-                                   " actualizado a: " + nuevoEstado);
-                return;
-            }
-        }
-        System.out.println("No se encontró la habitación " + numeroHabitacion);
+    /**
+     * Busca y devuelve una habitación por su número.
+     * @param numero Número de habitación a buscar
+     * @return La habitación encontrada o null si no existe
+     */
+    public Habitacion buscarHabitacion(int numero) {
+        return habitaciones.stream()
+            .filter(h -> h.getNumero() == numero)
+            .findFirst()
+            .orElse(null);
     }
 
-    public void agregarHabitacion(int numero, TipoHabitacion tipo, EstadoHabitacion estado, String descripcion) {
-        // Verificar si ya existe una habitación con ese número
-        for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getNumero() == numero) {
-                System.out.println("Ya existe una habitación con el número " + numero);
-                return;
-            }
-        }
-        
-        Habitacion nuevaHabitacion = new Habitacion(numero, tipo, estado, descripcion);
-        habitaciones.add(nuevaHabitacion);
-        System.out.println("Habitación agregada exitosamente");
-    }
-
-    public Habitacion buscarHabitacion(int numeroHabitacion) {
-        for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getNumero() == numeroHabitacion) {
-                return habitacion;
-            }
-        }
-        return null;
-    }
-
-    public List<Habitacion> filtrarPorTipo(TipoHabitacion tipo) {
-        List<Habitacion> habitacionesFiltradas = new ArrayList<>();
-        for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getTipo() == tipo) {
-                habitacionesFiltradas.add(habitacion);
-            }
-        }
-        return habitacionesFiltradas;
-    }
-
+    /**
+     * Obtiene la lista completa de habitaciones.
+     * @return Lista de todas las habitaciones del hotel
+     */
     public List<Habitacion> getHabitaciones() {
-        return this.habitaciones;
+        return habitaciones;
     }
 }

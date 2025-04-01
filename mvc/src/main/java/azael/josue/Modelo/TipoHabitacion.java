@@ -1,9 +1,16 @@
 package azael.josue.Modelo;
 
-// Enumerador tipo de habitación y su precio
+/**
+ * Enumeración que define los diferentes tipos de habitaciones disponibles en el hotel.
+ */
 public enum TipoHabitacion {
+    /** Habitación para una persona */
     INDIVIDUAL(50),
+    
+    /** Habitación para dos personas */
     DOBLE(80),
+    
+    /** Habitación de lujo con más espacio y comodidades */
     SUITE(150);
     
     // Declaramos la variable precio por noche

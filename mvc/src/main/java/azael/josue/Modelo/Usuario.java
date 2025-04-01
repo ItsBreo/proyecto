@@ -1,77 +1,52 @@
 package azael.josue.Modelo;
 
-import java.util.ArrayList;
-
+/**
+ * Modelo que representa un usuario del sistema.
+ * Almacena la información básica del usuario como su ID, nombre y contraseña.
+ */
 public class Usuario {
-    // Declaracion de variables
-    private String nombre;
     private int id;
-    private Reserva idReserva;
-    private ArrayList<Reserva> historialReservas;
-    private final int maximasReservas = 3;
-    private String contraseña;
+    private String nombre;
+    private String password;
 
-    // Constructor con sus características
-    public Usuario(String nombre, Reserva idReserva, ArrayList<Reserva> historialReservas, String contraseña) {
-        this.nombre = nombre;
-        this.idReserva = idReserva;
-        this.historialReservas = historialReservas;
-        this.id = historialReservas.size() + 1;
-    }
-
-    public Usuario(String nombre, int id, String contraseña) {
-        this.nombre = nombre;
+    /**
+     * Constructor que crea un nuevo usuario.
+     * @param id ID único del usuario
+     * @param nombre Nombre del usuario
+     * @param password Contraseña del usuario
+     */
+    public Usuario(int id, String nombre, String password) {
         this.id = id;
-        this.contraseña = contraseña;
-    }
-
-    // Getters y Setters    
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
         this.nombre = nombre;
+        this.password = password;
     }
 
+    /**
+     * Obtiene el ID del usuario.
+     * @return ID del usuario
+     */
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    /**
+     * Obtiene el nombre del usuario.
+     * @return Nombre del usuario
+     */
+    public String getNombre() {
+        return nombre;
     }
 
-    public Reserva getIdReserva() {
-        return idReserva;
+    /**
+     * Obtiene la contraseña del usuario.
+     * @return Contraseña del usuario
+     */
+    public String getPassword() {
+        return password;
     }
 
-    public void setIdReserva(Reserva idReserva) {
-        this.idReserva = idReserva;
-    }
-
-    public ArrayList<Reserva> getHistorialReservas() {
-        return historialReservas;
-    }
-
-    public void setHistorialReservas(ArrayList<Reserva> historialReservas) {
-        this.historialReservas = historialReservas;
-    }
-    
-    public boolean puedeHacerReserva() {
-        return historialReservas.size() < maximasReservas;
-    }
-
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
-    
     @Override
     public String toString() {
-        return "Usuario [nombre=" + nombre + ", id=" + id + ", idReserva=" + idReserva + ", historialReservas=" + historialReservas + "]";
+        return String.format("Usuario %d - %s", id, nombre);
     }
 }

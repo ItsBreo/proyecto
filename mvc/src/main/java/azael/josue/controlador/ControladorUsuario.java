@@ -2,78 +2,74 @@ package azael.josue.controlador;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import azael.josue.Modelo.Reserva;
 import azael.josue.Modelo.Usuario;
+import azael.josue.excepciones.ClienteNoEncontradoException;
 
+/**
+ * Controlador que maneja la lógica de los usuarios del hotel.
+ * Se encarga de registrar usuarios y mostrar su información.
+ */
 public class ControladorUsuario {
     private List<Usuario> usuarios;
-    private static int nextId = 1;
-    
-    public ControladorUsuario() {
+    private final ControladorReservas controladorReservas;
+    private int nextId = 1;
+
+    /**
+     * Constructor que inicializa la lista de usuarios y recibe el controlador de reservas.
+     * @param controladorReservas Controlador para gestionar las reservas
+     */
+    public ControladorUsuario(ControladorReservas controladorReservas) {
         this.usuarios = new ArrayList<>();
+        this.controladorReservas = controladorReservas;
     }
 
-    public Usuario registrarUsuario(String nombre, String contraseña) {
-        // Verificamos si ya existe un usuario con ese nombre y contraseña
-        for (Usuario usuario : usuarios) {
-            if (usuario.getNombre().equals(nombre)) {
-                if (usuario.getContraseña().equals(contraseña)) {
-                    System.out.println("\n Ya estás registrad@, " + nombre + ", por favor, inicia sesión.");
-                    return usuario; // Devolvemos el usuario existente
-                } else {
-                    System.out.println("\nYa existe un usuario con ese nombre. Por favor, use otro nombre.");
-                    return null;
-                }
-            }
+    /**
+     * Registra un nuevo usuario en el sistema.
+     * @param nombre Nombre del usuario
+     * @param password Contraseña del usuario
+     * @return El usuario creado
+     */
+    public Usuario registrarUsuario(String nombre, String password) {
+        if (nombre == null || nombre.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre y la contraseña no pueden estar vacíos");
         }
 
-        // Si no existe, crear nuevo usuario con ID autogenerado
-        Usuario nuevoUsuario = new Usuario(nombre, nextId++, contraseña);
-        usuarios.add(nuevoUsuario);
-        System.out.println("\n¡Registro exitoso!");
-        System.out.println("Su ID de usuario es: " + nuevoUsuario.getId());
-        return nuevoUsuario;
+        Usuario usuario = new Usuario(nextId++, nombre, password);
+        usuarios.add(usuario);
+        return usuario;
     }
 
-    public Usuario iniciarSesion(String nombre, String contraseña) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getNombre().equals(nombre) && usuario.getContraseña().equals(contraseña)) {
-                System.out.println("\nBienvenido " + nombre + "!");
-                return usuario;
-            }
+    /**
+     * Muestra toda la información de un cliente, incluyendo sus reservas.
+     * @param id ID del usuario
+     * @throws ClienteNoEncontradoException si el usuario no existe
+     */
+    public void mostrarInformacionCliente(int id) throws ClienteNoEncontradoException {
+        Usuario usuario = buscarUsuarioPorId(id);
+        if (usuario == null) {
+            throw new ClienteNoEncontradoException("No se encontró el usuario con ID: " + id);
         }
-        System.out.println("\nCredenciales incorrectas");
-        return null;
-    }   
 
-    public void mostrarInformacionCliente(Usuario usuario) {
-        if (usuario != null) {
-            System.out.println("\n=== Información del Cliente ===");
-            System.out.println("Nombre: " + usuario.getNombre());
-            System.out.println("ID: " + usuario.getId());
-            System.out.print("Reserva Actual: ");
-            if (usuario.getIdReserva() == null) {
-                System.out.println("Sin reserva actual");
-            } else {
-                System.out.println(usuario.getIdReserva());
-            }
-            System.out.println("\nHistorial de Reservas:");
-            ArrayList<Reserva> historial = usuario.getHistorialReservas();
-            if (historial != null && !historial.isEmpty()) {
-                for (Reserva reserva : historial) {
-                    System.out.println("- " + reserva.toString());
-                }
-            } else {
-                System.out.println("No hay reservas en el historial");
-            }
-            System.out.println("==============================\n");
-        } else {
-            System.out.println("No se ha encontrado información del cliente");
-        }
+        System.out.println("\n=== INFORMACIÓN DEL CLIENTE ===");
+        System.out.println("ID: " + usuario.getId());
+        
+        // Mostrar reservas activas
+        controladorReservas.mostrarReservasActivas(id);
+        
+        // Mostrar historial de reservas
+        controladorReservas.mostrarHistorialReservas(id);
+        System.out.println("==============================\n");
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarios;
+    /**
+     * Busca un usuario por su ID.
+     * @param id ID del usuario a buscar
+     * @return El usuario encontrado o null si no existe
+     */
+    public Usuario buscarUsuarioPorId(int id) {
+        return usuarios.stream()
+            .filter(u -> u.getId() == id)
+            .findFirst()
+            .orElse(null);
     }
 }

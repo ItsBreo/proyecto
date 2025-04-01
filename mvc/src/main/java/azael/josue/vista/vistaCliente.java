@@ -1,87 +1,71 @@
 package azael.josue.vista;
 
 import java.util.Scanner;
-import azael.josue.Modelo.Usuario;
 import azael.josue.controlador.ControladorUsuario;
+import azael.josue.excepciones.ClienteNoEncontradoException;
 
+/**
+ * Vista que maneja la interfaz de usuario para las operaciones relacionadas con clientes.
+ * Permite ver la información de los clientes y sus reservas.
+ */
 public class VistaCliente {
-    private Scanner sc;
-    private ControladorUsuario controlador;
-    private Usuario usuarioActual;
-    
-    public VistaCliente(ControladorUsuario controlador, Scanner sc) {
-        this.controlador = controlador;
-        this.sc = sc;
-        this.usuarioActual = null;
+    private final Scanner scanner;
+    private final ControladorUsuario controladorUsuario;
+
+    /**
+     * Constructor que inicializa la vista de clientes.
+     * @param controladorUsuario Controlador para manejar la lógica de usuarios
+     * @param scanner Scanner compartido para entrada de usuario
+     */
+    public VistaCliente(ControladorUsuario controladorUsuario, Scanner scanner) {
+        this.controladorUsuario = controladorUsuario;
+        this.scanner = scanner;
     }
 
+    /**
+     * Muestra el menú principal de gestión de clientes y maneja la interacción del usuario.
+     * Permite ver la información detallada de un cliente específico.
+     */
     public void mostrarMenuCliente() {
-        int opcion = -1;
+        int opcion;
         do {
-            try {
-                System.out.println("\n=== MENÚ CLIENTE ===");
-                System.out.println("1. Registrarse");
-                System.out.println("2. Iniciar sesión");
-                System.out.println("3. Ver información de cliente");
-                System.out.println("0. Volver al menú principal");
-                System.out.print("Seleccione una opción: ");
-                
-                opcion = sc.nextInt();
-                sc.nextLine(); // Limpiar el buffer
+            System.out.println("\n=== GESTIÓN DE CLIENTES ===");
+            System.out.println("1. Ver información de cliente");
+            System.out.println("0. Volver al menú principal");
+            System.out.print("\nSeleccione una opción: ");
 
+            try {
+                opcion = Integer.parseInt(scanner.nextLine());
                 switch (opcion) {
                     case 1:
-                        registrarNuevoUsuario();
-                        break;
-                    case 2:
-                        iniciarSesion();
-                        break;
-                    case 3:
-                        if (usuarioActual != null) {
-                            controlador.mostrarInformacionCliente(usuarioActual);
-                        } else {
-                            System.out.println("\nError: Primero debe iniciar sesión");
-                        }
+                        mostrarInformacionCliente();
                         break;
                     case 0:
+                        System.out.println("Volviendo al menú principal...");
                         break;
                     default:
-                        System.out.println("\nError: Opción no válida");
-                        break;
+                        System.out.println("Opción no válida");
                 }
-            } catch (Exception e) {
-                System.out.println("\nError: Por favor, ingrese un número válido");
-                sc.nextLine(); // Limpiar el buffer
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor, ingrese un número válido");
                 opcion = -1;
             }
         } while (opcion != 0);
     }
 
-    private void registrarNuevoUsuario() {
-        System.out.println("\n=== REGISTRO/INICIO DE SESIÓN ===");
-        System.out.print("Ingrese su nombre: ");
-        String nombre = sc.nextLine();
-        
-        System.out.print("Ingrese su contraseña: ");
-        String contraseña = sc.nextLine();
-        
-        Usuario usuario = controlador.registrarUsuario(nombre, contraseña);
-        if (usuario != null) {
-            usuarioActual = usuario;
+    /**
+     * Solicita el ID de un cliente y muestra su información detallada,
+     * incluyendo sus reservas activas y el historial de reservas.
+     */
+    private void mostrarInformacionCliente() {
+        try {
+            System.out.print("\nIngrese el ID del cliente: ");
+            int idCliente = Integer.parseInt(scanner.nextLine());
+            controladorUsuario.mostrarInformacionCliente(idCliente);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: El ID debe ser un número válido");
+        } catch (ClienteNoEncontradoException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
-
-    private void iniciarSesion() {
-        System.out.println("\n=== INICIO DE SESIÓN ===");
-        System.out.print("Ingrese su nombre: ");
-        String nombre = sc.nextLine();
-        
-        System.out.print("Ingrese su contraseña: ");
-        String contraseña = sc.nextLine();
-        
-        Usuario usuario = controlador.iniciarSesion(nombre, contraseña);
-        if (usuario != null) {
-            usuarioActual = usuario;
-        }
-    }   
 }

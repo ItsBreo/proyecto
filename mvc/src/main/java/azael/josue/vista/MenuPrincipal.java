@@ -1,60 +1,81 @@
 package azael.josue.vista;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
-import azael.josue.controlador.ControladorHabitaciones;
-import azael.josue.controlador.ControladorUsuario;
+import azael.josue.controlador.*;
+import azael.josue.Modelo.Usuario;
 
+/**
+ * Clase principal que maneja el menú principal del sistema de gestión hotelera.
+ * Coordina la interacción entre las diferentes vistas y controladores.
+ */
 public class MenuPrincipal {
-    private Scanner scanner;
-    private ControladorHabitaciones controladorHabitaciones;
-    private ControladorUsuario controladorUsuario;
+    private final Scanner scanner;
+    private final ControladorHabitaciones controladorHabitaciones;
+    private final ControladorUsuario controladorUsuario;
+    private final ControladorReservas controladorReservas;
+    private final VistaHabitaciones vistaHabitaciones;
+    private final VistaCliente vistaCliente;
+    private final VistaReservas vistaReservas;
 
+    /**
+     * Constructor que inicializa el menú principal y todos sus componentes.
+     * Crea las instancias de controladores y vistas necesarias.
+     */
     public MenuPrincipal() {
         this.scanner = new Scanner(System.in);
         this.controladorHabitaciones = new ControladorHabitaciones();
-        this.controladorUsuario = new ControladorUsuario();
+        this.controladorReservas = new ControladorReservas(controladorHabitaciones);
+        this.controladorUsuario = new ControladorUsuario(controladorReservas);
+        this.vistaHabitaciones = new VistaHabitaciones(controladorHabitaciones, scanner);
+        this.vistaCliente = new VistaCliente(controladorUsuario, scanner);
+        this.vistaReservas = new VistaReservas(controladorReservas, controladorHabitaciones, scanner);
+        
+        // Crear usuario de ejemplo
+        Usuario usuarioEjemplo = controladorUsuario.registrarUsuario("Cliente1", "123456");
+        System.out.println("\n=== Usuario de ejemplo creado ===");
+        System.out.println("ID: " + usuarioEjemplo.getId());
+        System.out.println("Nombre: " + usuarioEjemplo.getNombre());
+        System.out.println("==============================\n");
     }
 
-    public void mostrarMenu() {
-        int op = 0;
-        try {
-            while (op != 4) {
-                System.out.println("\n\nGESTOR DE HABITACIONES DE HOTEL\n");
-                System.out.println("1. Gestionar Habitaciones");
-                System.out.println("2. Gestionar Usuarios");
-                System.out.println("3. Gestionar Reservas");
-                System.out.println("4. Salir");
-                System.out.println("5. Entrar como admin");
-                System.out.print("\nSeleccione una opción: ");
-                op = scanner.nextInt();
-                scanner.nextLine();
+    /**
+     * Inicia la ejecución del programa mostrando el menú principal.
+     * Permite al usuario navegar entre las diferentes opciones del sistema.
+     */
+    public void iniciar() {
+        int opcion;
+        do {
+            System.out.println("\n=== SISTEMA DE GESTIÓN HOTELERA ===");
+            System.out.println("1. Gestión de habitaciones");
+            System.out.println("2. Información de clientes");
+            System.out.println("3. Gestión de reservas");
+            System.out.println("0. Salir");
+            System.out.print("\nSeleccione una opción: ");
 
-                switch (op) {
+            try {
+                opcion = Integer.parseInt(scanner.nextLine());
+                switch (opcion) {
                     case 1:
-                        VistaHabitaciones vistaHabitaciones = new VistaHabitaciones(controladorHabitaciones, scanner);
                         vistaHabitaciones.mostrarMenuHabitaciones();
                         break;
                     case 2:
-                        VistaCliente vistaCliente = new VistaCliente(controladorUsuario, scanner);
                         vistaCliente.mostrarMenuCliente();
                         break;
                     case 3:
+                        vistaReservas.mostrarMenuReservas();
                         break;
-                    case 4:
-                        System.out.println("\n\nHasta luego, ¡vuelva pronto!\n\n");
-                        break;
-                    case 5:
+                    case 0:
+                        System.out.println("¡Gracias por usar nuestro sistema!");
                         break;
                     default:
-                        System.out.println("\nError: Por favor, ingrese un número dentro del rango 1-5.");
-                        break;
+                        System.out.println("Opción no válida");
                 }
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor, ingrese un número válido");
+                opcion = -1;
             }
-        } catch (InputMismatchException e) {
-            System.out.println("\nError: Por favor, ingrese un número válido. (1-5)");
-            scanner.nextLine();
-            mostrarMenu();
-        }
+        } while (opcion != 0);
+
+        scanner.close();
     }
 }
