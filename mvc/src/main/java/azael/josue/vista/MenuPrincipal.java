@@ -3,11 +3,21 @@ package azael.josue.vista;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import azael.josue.controlador.ControladorHabitaciones;
+import azael.josue.controlador.ControladorUsuario;
 
 public class MenuPrincipal {
+    private Scanner scanner;
+    private ControladorHabitaciones controladorHabitaciones;
+    private ControladorUsuario controladorUsuario;
+
+    public MenuPrincipal() {
+        this.scanner = new Scanner(System.in);
+        this.controladorHabitaciones = new ControladorHabitaciones();
+        this.controladorUsuario = new ControladorUsuario();
+    }
+
     public void mostrarMenu() {
         int op = 0;
-        Scanner scanner = new Scanner(System.in);
         try {
             while (op != 4) {
                 System.out.println("\n\nGESTOR DE HABITACIONES DE HOTEL\n");
@@ -22,11 +32,12 @@ public class MenuPrincipal {
 
                 switch (op) {
                     case 1:
-                        ControladorHabitaciones controlador = new ControladorHabitaciones();
-                        VistaHabitaciones vistaHabitaciones = new VistaHabitaciones(controlador, scanner);
+                        VistaHabitaciones vistaHabitaciones = new VistaHabitaciones(controladorHabitaciones, scanner);
                         vistaHabitaciones.mostrarMenuHabitaciones();
                         break;
                     case 2:
+                        VistaCliente vistaCliente = new VistaCliente(controladorUsuario, scanner);
+                        vistaCliente.mostrarMenuCliente();
                         break;
                     case 3:
                         break;
@@ -36,15 +47,14 @@ public class MenuPrincipal {
                     case 5:
                         break;
                     default:
-                        System.out.println("Opción fuera del rango 1-5.");
-                        op = 0;
+                        System.out.println("\nError: Por favor, ingrese un número dentro del rango 1-5.");
                         break;
                 }
             }
         } catch (InputMismatchException e) {
-            System.out.println("Error: Por favor, ingrese un valor válido. (1-5)");
+            System.out.println("\nError: Por favor, ingrese un número válido. (1-5)");
             scanner.nextLine();
+            mostrarMenu();
         }
-        scanner.close();
     }
 }
