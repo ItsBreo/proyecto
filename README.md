@@ -1,52 +1,63 @@
-# Gestor de Habitaciones de Hotel
+# Sistema de Gestión Hotelera
 
-## Descripción
+## 📋 Descripción
+Sistema de gestión hotelera desarrollado en Java que permite administrar habitaciones, reservas y clientes. Implementa el patrón de diseño MVC (Modelo-Vista-Controlador) para una mejor organización y mantenibilidad del código.
 
-Este es un proyecto en **Java** que implementa un **gestor de habitaciones de hotel** utilizando el **patrón de diseño MVC (Modelo-Vista-Controlador)**. Permite gestionar habitaciones, verificar su disponibilidad y realizar reservas.
+## ✨ Características Principales
+- Gestión de habitaciones (individuales, dobles y suites)
+- Sistema de reservas con validación de fechas
+- Administración de clientes
+- Visualización de disponibilidad en tiempo real
+- Historial de reservas por cliente
 
-## Tecnologías Utilizadas
+## 🛠️ Tecnologías
+- Java 17+
+- Maven para gestión de dependencias
+- Arquitectura MVC
+- Streams y programación funcional
+- JavaDoc para documentación
 
-- **Java 17+**
-- **Patrón MVC**
-- **Maven** para la gestión de dependencias
-
-## Estructura del Proyecto
-
+## 📁 Estructura del Proyecto
 ```
-mi_proyecto_mvc/
-│── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   ├── azael/josue/
-│   │   │   │   ├── Main.java          # Punto de entrada de la aplicación
-│   │   │   │   ├── modelo/            # Clases del modelo (Ej: Habitacion.java)
-│   │   │   │   ├── vista/             # Clases de la vista (Ej: Interfaz.java)
-│   │   │   │   ├── controlador/       # Clases del controlador (Ej: HabitacionController.java)
-│   │   ├── resources/                 # Configuración y archivos adicionales
-│   ├── test/                           # Pruebas unitarias
-│── pom.xml                              # Archivo de configuración de Maven
+proyecto/
+├── src/main/java/azael/josue/
+│   ├── Main.java                    # Punto de entrada
+│   ├── controlador/
+│   │   ├── ControladorHabitaciones  # Gestión de habitaciones
+│   │   ├── ControladorReservas      # Gestión de reservas
+│   │   └── ControladorUsuario       # Gestión de usuarios
+│   ├── modelo/
+│   │   ├── Habitacion              # Modelo de habitación
+│   │   ├── Reserva                 # Modelo de reserva
+│   │   ├── Usuario                 # Modelo de usuario
+│   │   ├── TipoHabitacion         # Tipos de habitaciones
+│   │   └── EstadoHabitacion       # Estados posibles
+│   └── vista/
+│       ├── MenuPrincipal          # Menú principal
+│       ├── VistaHabitaciones      # Vista de habitaciones
+│       ├── VistaReservas          # Vista de reservas
+│       └── VistaCliente           # Vista de clientes
 ```
 
-## Clases Principales
+## 🚀 Funcionalidades
+1. **Gestión de Habitaciones**
+   - Ver todas las habitaciones
+   - Consultar disponibilidad
+   - Ver precios por tipo
 
-### **Modelo** (`modelo`)
+2. **Gestión de Reservas**
+   - Crear nueva reserva
+   - Cancelar reserva existente
+   - Ver reservas activas
 
-- `Habitacion.java`: Representa una habitación del hotel.
-- `Reserva.java`: Representa una reserva de habitación.
+3. **Gestión de Clientes**
+   - Ver información del cliente
+   - Consultar historial de reservas
 
-### **Vista** (`vista`)
+## 💻 Uso
+1. Ejecutar la clase `Main.java`
+2. Navegar por el menú principal usando las opciones numeradas
+3. Seguir las instrucciones en pantalla para cada operación
 
-- `Interfaz.java`: Maneja la interfaz de usuario en consola.
-
-### **Controlador** (`controlador`)
-
-- `HabitacionController.java`: Controla la lógica de gestión de habitaciones.
-
-## Licencia
-
-Este proyecto se distribuye bajo la licencia MIT. Puedes usarlo libremente para fines educativos o comerciales.
-
----
-
-**Autores:** Azael y Josue 🚀
-
+## 📝 Documentación
+Todo el código está documentado usando JavaDoc. Para ver la documentación detallada de cada clase y método, consultar los comentarios en el código fuente.
