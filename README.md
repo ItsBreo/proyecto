@@ -11,7 +11,7 @@ Sistema de gestión hotelera desarrollado en Java que permite administrar habita
 - Historial de reservas por cliente
 
 ## 🛠️ Tecnologías
-- Java 17+
+- Java 23
 - Maven para gestión de dependencias
 - Arquitectura MVC
 - Streams y programación funcional
