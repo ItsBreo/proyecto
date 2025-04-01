@@ -1,7 +1,10 @@
 package azael.josue;
 
+import azael.josue.vista.MenuPrincipal;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        MenuPrincipal menu = new MenuPrincipal();
+        menu.mostrarMenu();
     }
 }

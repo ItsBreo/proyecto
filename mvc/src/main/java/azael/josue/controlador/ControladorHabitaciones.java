@@ -5,15 +5,12 @@ import java.util.List;
 import azael.josue.Modelo.Habitacion;
 import azael.josue.Modelo.TipoHabitacion;
 import azael.josue.Modelo.EstadoHabitacion;
-import azael.josue.vista.VistaHabitaciones;
 
 public class ControladorHabitaciones {
     private List<Habitacion> habitaciones;
-    private VistaHabitaciones vista;
 
     public ControladorHabitaciones() {
         this.habitaciones = new ArrayList<>();
-        this.vista = new VistaHabitaciones();
         inicializarHabitaciones(); // Crear algunas habitaciones de ejemplo
     }
 
@@ -40,38 +37,61 @@ public class ControladorHabitaciones {
         habitaciones.add(new Habitacion(305, TipoHabitacion.DOBLE, EstadoHabitacion.DISPONIBLE, "Vista a la ciudad"));
     }
 
-    public void mostrarTodasLasHabitaciones() {
-        vista.mostrarHabitaciones(habitaciones);
+    public void mostrarHabitaciones() {
+        System.out.println("\n=== LISTADO DE HABITACIONES ===\n");
+        System.out.println("N°  | TIPO          | ESTADO        | DESCRIPCIÓN");
+        System.out.println("----+---------------+--------------+-------------");
+        
+        for (Habitacion habitacion : habitaciones) {
+            System.out.printf("%-3d | %-13s | %-12s | %s%n", 
+                habitacion.getNumero(), 
+                habitacion.getTipo(),
+                habitacion.getEstado(),
+                habitacion.getDescripcion());
+        }
+        System.out.println("\n");
     }
 
     public void mostrarHabitacionesDisponibles() {
-        vista.mostrarHabitacionesDisponibles(habitaciones);
+        System.out.println("\n=== HABITACIONES DISPONIBLES ===\n");
+        System.out.println("N°  | TIPO          | DESCRIPCIÓN");
+        System.out.println("----+---------------+-------------");
+        
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getEstado() == EstadoHabitacion.DISPONIBLE) {
+                System.out.printf("%-3d | %-13s | %s%n", 
+                    habitacion.getNumero(), 
+                    habitacion.getTipo(),
+                    habitacion.getDescripcion());
+            }
+        }
+        System.out.println("\n");
     }
 
     public void cambiarEstadoHabitacion(int numeroHabitacion, EstadoHabitacion nuevoEstado) {
         for (Habitacion habitacion : habitaciones) {
             if (habitacion.getNumero() == numeroHabitacion) {
                 habitacion.setEstado(nuevoEstado);
-                vista.mostrarMensaje("Estado de la habitación " + numeroHabitacion + 
+                System.out.println("Estado de la habitación " + numeroHabitacion + 
                                    " actualizado a: " + nuevoEstado);
                 return;
             }
         }
-        vista.mostrarMensaje("No se encontró la habitación " + numeroHabitacion);
+        System.out.println("No se encontró la habitación " + numeroHabitacion);
     }
 
     public void agregarHabitacion(int numero, TipoHabitacion tipo, EstadoHabitacion estado, String descripcion) {
         // Verificar si ya existe una habitación con ese número
         for (Habitacion habitacion : habitaciones) {
             if (habitacion.getNumero() == numero) {
-                vista.mostrarMensaje("Ya existe una habitación con el número " + numero);
+                System.out.println("Ya existe una habitación con el número " + numero);
                 return;
             }
         }
         
         Habitacion nuevaHabitacion = new Habitacion(numero, tipo, estado, descripcion);
         habitaciones.add(nuevaHabitacion);
-        vista.mostrarMensaje("Habitación agregada exitosamente");
+        System.out.println("Habitación agregada exitosamente");
     }
 
     public Habitacion buscarHabitacion(int numeroHabitacion) {
@@ -91,5 +111,9 @@ public class ControladorHabitaciones {
             }
         }
         return habitacionesFiltradas;
+    }
+
+    public List<Habitacion> getHabitaciones() {
+        return this.habitaciones;
     }
 }
